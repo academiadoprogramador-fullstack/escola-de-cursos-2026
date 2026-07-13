@@ -68,7 +68,22 @@ Desenvolvido durante o curso Fullstack da [Academia do Programador](https://www.
      - Graduação (2-100 caracteres)
    - Não pode haver tutores com o mesmo nome.
 
-5. Módulo de Turmas
+5. Módulo de Alunos
+
+   ### Requisitos Funcionais
+   - O sistema deve permitir o cadastro de novos alunos
+   - O sistema deve permitir a edição de alunos cadastrados
+   - O sistema deve permitir excluir alunos já cadastrados
+   - O sistema deve permitir visualizar alunos cadastrados
+
+   ### Regras de Negócio
+   - Campos obrigatórios:
+     - Nome (2-100 caracteres)
+     - Telefone (formato validado: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX)
+     - Email (formato válido)
+   - Não pode haver alunos com a mesma matrícula.
+
+6. Módulo de Turmas
 
    ### Requisitos Funcionais
    - O sistema deve permitir o cadastro de novas turmas
@@ -87,21 +102,6 @@ Desenvolvido durante o curso Fullstack da [Academia do Programador](https://www.
    - Toda turma deve possuir exatamente um instrutor.
    - A data de término da turma deve ser posterior à data de início.
    - O número máximo de alunos em uma turma deve ser maior que zero.
-
-6. Módulo de Alunos
-
-   ### Requisitos Funcionais
-   - O sistema deve permitir o cadastro de novos alunos
-   - O sistema deve permitir a edição de alunos cadastrados
-   - O sistema deve permitir excluir alunos já cadastrados
-   - O sistema deve permitir visualizar alunos cadastrados
-
-   ### Regras de Negócio
-   - Campos obrigatórios:
-     - Nome (2-100 caracteres)
-     - Telefone (formato validado: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX)
-     - Email (formato válido)
-   - Não pode haver alunos com a mesma matrícula.
 
 7. Módulo de Matrícula
 

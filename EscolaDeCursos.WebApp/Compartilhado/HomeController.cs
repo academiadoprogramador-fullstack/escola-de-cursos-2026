@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace EscolaDeCursos.WebApp.Compartilhado.Apresentacao;
+namespace EscolaDeCursos.WebApp.Compartilhado;
 
 public class HomeController : Controller
 {
