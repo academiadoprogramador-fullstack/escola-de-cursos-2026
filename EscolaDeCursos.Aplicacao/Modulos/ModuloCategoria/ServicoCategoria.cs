@@ -1,5 +1,6 @@
 using FluentResults;
 using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
+using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
 using EscolaDeCursos.Aplicacao.Compartilhado;
 
 namespace EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
@@ -7,12 +8,15 @@ namespace EscolaDeCursos.Aplicacao.Modulos.ModuloCategoria;
 public class ServicoCategoria : ServicoBase<Categoria>
 {
     private readonly IRepositorioCategoria repositorioCategoria;
+    private readonly IRepositorioCurso repositorioCurso;
 
     public ServicoCategoria(
-        IRepositorioCategoria repositorioCategoria
+        IRepositorioCategoria repositorioCategoria,
+        IRepositorioCurso repositorioCurso
     )
     {
         this.repositorioCategoria = repositorioCategoria;
+        this.repositorioCurso = repositorioCurso;
     }
 
     public Result Cadastrar(CadastrarCategoriaDto dto)
@@ -59,6 +63,9 @@ public class ServicoCategoria : ServicoBase<Categoria>
         if (categoria == null)
             return Falha(string.Empty, "Categoria não encontrada.");
 
+        if (PossuiCursosVinculados(id))
+            return Falha(string.Empty, "Não é possível excluir esta categoria, pois ela possui cursos vinculados.");
+
         repositorioCategoria.Excluir(id);
 
         return Result.Ok();
@@ -92,6 +99,13 @@ public class ServicoCategoria : ServicoBase<Categoria>
                 c.Id != idIgnorado &&
                 NormalizarNome(c.Nome) == nomeNormalizado
             );
+    }
+
+    private bool PossuiCursosVinculados(Guid categoriaId)
+    {
+        return repositorioCurso
+            .SelecionarTodos()
+            .Any(c => c.Categoria.Id == categoriaId);
     }
 
     private static string NormalizarNome(string nome)
