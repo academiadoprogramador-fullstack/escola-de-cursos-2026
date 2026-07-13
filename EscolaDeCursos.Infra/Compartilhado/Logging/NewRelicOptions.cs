@@ -1,4 +1,4 @@
-namespace EscolaDeCursos.Infra.Comartilhado.Logging;
+namespace EscolaDeCursos.Infra.Compartilhado.Logging;
 
 public sealed class NewRelicOptions
 {

@@ -3,7 +3,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace EscolaDeCursos.Infra.Comartilhado.Logging;
+namespace EscolaDeCursos.Infra.Compartilhado.Logging;
 
 public static class SerilogFactory
 {
