@@ -1,6 +1,7 @@
 using FluentResults;
 using EscolaDeCursos.Dominio.Modulos.ModuloCategoria;
 using EscolaDeCursos.Dominio.Modulos.ModuloCurso;
+using EscolaDeCursos.Dominio.Modulos.ModuloTurma;
 using EscolaDeCursos.Aplicacao.Compartilhado;
 
 namespace EscolaDeCursos.Aplicacao.Modulos.ModuloCurso;
@@ -9,14 +10,17 @@ public class ServicoCurso : ServicoBase<Curso>
 {
     private readonly IRepositorioCurso repositorioCurso;
     private readonly IRepositorioCategoria repositorioCategoria;
+    private readonly IRepositorioTurma repositorioTurma;
 
     public ServicoCurso(
         IRepositorioCurso repositorioCurso,
-        IRepositorioCategoria repositorioCategoria
+        IRepositorioCategoria repositorioCategoria,
+        IRepositorioTurma repositorioTurma
     )
     {
         this.repositorioCurso = repositorioCurso;
         this.repositorioCategoria = repositorioCategoria;
+        this.repositorioTurma = repositorioTurma;
     }
 
     public Result Cadastrar(CadastrarCursoDto dto)
@@ -85,6 +89,9 @@ public class ServicoCurso : ServicoBase<Curso>
 
         if (curso.Aulas.Count > 0)
             return Falha(string.Empty, "Não é possível excluir este curso, pois ele possui aulas vinculadas.");
+
+        if (PossuiTurmasVinculadas(id))
+            return Falha(string.Empty, "Não é possível excluir este curso, pois ele possui turmas vinculadas.");
 
         repositorioCurso.Excluir(id);
 
@@ -155,5 +162,12 @@ public class ServicoCurso : ServicoBase<Curso>
     private static string NormalizarNome(string nome)
     {
         return nome.Trim().ToLowerInvariant();
+    }
+
+    private bool PossuiTurmasVinculadas(Guid cursoId)
+    {
+        return repositorioTurma
+            .SelecionarTodos()
+            .Any(t => t.Curso.Id == cursoId);
     }
 }

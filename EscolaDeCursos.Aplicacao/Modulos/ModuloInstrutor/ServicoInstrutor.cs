@@ -1,5 +1,6 @@
 using FluentResults;
 using EscolaDeCursos.Dominio.Modulos.ModuloInstrutor;
+using EscolaDeCursos.Dominio.Modulos.ModuloTurma;
 using EscolaDeCursos.Aplicacao.Compartilhado;
 
 namespace EscolaDeCursos.Aplicacao.Modulos.ModuloInstrutor;
@@ -7,12 +8,15 @@ namespace EscolaDeCursos.Aplicacao.Modulos.ModuloInstrutor;
 public class ServicoInstrutor : ServicoBase<Instrutor>
 {
     private readonly IRepositorioInstrutor repositorioInstrutor;
+    private readonly IRepositorioTurma repositorioTurma;
 
     public ServicoInstrutor(
-        IRepositorioInstrutor repositorioInstrutor
+        IRepositorioInstrutor repositorioInstrutor,
+        IRepositorioTurma repositorioTurma
     )
     {
         this.repositorioInstrutor = repositorioInstrutor;
+        this.repositorioTurma = repositorioTurma;
     }
 
     public Result Cadastrar(CadastrarInstrutorDto dto)
@@ -69,6 +73,9 @@ public class ServicoInstrutor : ServicoBase<Instrutor>
         if (instrutor == null)
             return Falha(string.Empty, "Instrutor não encontrado.");
 
+        if (PossuiTurmasVinculadas(id))
+            return Falha(string.Empty, "Não é possível excluir este instrutor, pois ele possui turmas vinculadas.");
+
         repositorioInstrutor.Excluir(id);
 
         return Result.Ok();
@@ -113,5 +120,12 @@ public class ServicoInstrutor : ServicoBase<Instrutor>
     private static string NormalizarNome(string nome)
     {
         return nome.Trim().ToLowerInvariant();
+    }
+
+    private bool PossuiTurmasVinculadas(Guid instrutorId)
+    {
+        return repositorioTurma
+            .SelecionarTodos()
+            .Any(t => t.Instrutor.Id == instrutorId);
     }
 }

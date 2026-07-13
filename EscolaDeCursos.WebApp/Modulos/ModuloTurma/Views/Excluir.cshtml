@@ -1,0 +1,42 @@
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Exclusão de Turma";
+}
+
+@model ExcluirTurmaViewModel;
+
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Excluir" asp-route-id="@Model.Id" method="post">
+    <input asp-for="Id" type="hidden">
+
+    <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+        Deseja realmente excluir esta turma?
+    </div>
+
+    <dl class="row mb-0">
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">ID</dt>
+        <dd class="col-sm-8 text-break">@Model.Id</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Nome</dt>
+        <dd class="col-sm-8">@Model.Nome</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Curso</dt>
+        <dd class="col-sm-8">@Model.NomeCurso</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Instrutor</dt>
+        <dd class="col-sm-8">@Model.NomeInstrutor</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Máximo de Alunos</dt>
+        <dd class="col-sm-8">@Model.NumeroMaximoAlunos</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Início</dt>
+        <dd class="col-sm-8">@Model.DataInicio.ToString("dd/MM/yyyy")</dd>
+
+        <dt class="col-sm-4 fw-semibold text-primary text-uppercase small">Término</dt>
+        <dd class="col-sm-8">@Model.DataTermino.ToString("dd/MM/yyyy")</dd>
+    </dl>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">Voltar</a>
+        <button class="btn btn-primary rounded-pill px-4" type="submit">Confirmar</button>
+    </div>
+</form>

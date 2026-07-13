@@ -1,0 +1,97 @@
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = $"Matrículas - {Model.NomeTurma}";
+}
+
+@model GerenciarMatriculasViewModel;
+
+<div class="mb-4">
+    <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">Voltar</a>
+</div>
+
+@if (TempData["MensagemErro"] is string mensagemErro)
+{
+    <div class="alert alert-danger border-start border-danger border-4 rounded-3" role="alert">
+        @mensagemErro
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-primary-subtle shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title mb-3">@Model.NomeTurma</h5>
+                <dl class="row g-2 mb-0">
+                    <dt class="col-5 text-secondary fw-semibold small">Curso</dt>
+                    <dd class="col-7 mb-0">@Model.NomeCurso</dd>
+
+                    <dt class="col-5 text-secondary fw-semibold small">Instrutor</dt>
+                    <dd class="col-7 mb-0">@Model.NomeInstrutor</dd>
+
+                    <dt class="col-5 text-secondary fw-semibold small">Vagas</dt>
+                    <dd class="col-7 mb-0">@Model.Matriculas.Count / @Model.NumeroMaximoAlunos</dd>
+
+                    <dt class="col-5 text-secondary fw-semibold small">Início</dt>
+                    <dd class="col-7 mb-0">@Model.DataInicio.ToString("dd/MM/yyyy")</dd>
+
+                    <dt class="col-5 text-secondary fw-semibold small">Término</dt>
+                    <dd class="col-7 mb-0">@Model.DataTermino.ToString("dd/MM/yyyy")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        @if (Model.Matriculas.Count < Model.NumeroMaximoAlunos)
+        {
+            <div class="card border-primary-subtle shadow-sm mb-3">
+                <div class="card-header bg-transparent border-primary-subtle">
+                    <h6 class="mb-0 fw-semibold text-primary">Matricular Aluno</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AdicionarMatricula" method="post">
+                        <input type="hidden" name="TurmaId" value="@Model.TurmaId">
+
+                        <div class="row g-3 align-items-end">
+                            <div class="col-md-9">
+                                <label class="form-label fw-semibold text-primary text-uppercase small">Aluno</label>
+                                <select name="AlunoId" class="form-select" asp-items="@Model.AlunosDisponiveis">
+                                    <option value="">Selecione um aluno...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary rounded-pill px-4 w-100" type="submit">Matricular</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+
+        @if (Model.Matriculas.Count == 0)
+        {
+            <div class="alert alert-primary border-start border-primary border-4 rounded-3" role="alert">
+                Nenhum aluno matriculado nesta turma.
+            </div>
+        }
+        else
+        {
+            <div class="list-group">
+                @foreach (ListarMatriculaViewModel m in Model.Matriculas)
+                {
+                    <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@m.NomeAluno</strong>
+                            <span class="badge text-bg-primary rounded-pill ms-2">@m.NumeroMatriculaAluno</span>
+                        </div>
+                        <form asp-action="RemoverMatricula" method="post" class="d-inline">
+                            <input type="hidden" name="Id" value="@m.Id">
+                            <input type="hidden" name="TurmaId" value="@Model.TurmaId">
+                            <button class="btn btn-outline-primary btn-sm rounded-pill px-3" type="submit">Remover</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
