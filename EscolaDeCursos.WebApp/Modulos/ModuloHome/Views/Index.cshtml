@@ -1,0 +1,56 @@
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Início";
+}
+
+<div class="row g-4 pb-4">
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Categorias</h5>
+                <p class="card-text text-secondary">Gerencie as categorias dos cursos</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Categoria" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Cursos</h5>
+                <p class="card-text text-secondary">Gerencie os cursos e suas aulas</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Curso" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Instrutores</h5>
+                <p class="card-text text-secondary">Cadastre os instrutores da escola</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Instrutor" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Alunos</h5>
+                <p class="card-text text-secondary">Gerencie o cadastro de alunos</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Aluno" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-primary-subtle shadow-sm">
+            <div class="card-body text-center p-4">
+                <h5 class="card-title text-primary">Turmas</h5>
+                <p class="card-text text-secondary">Gerencie as turmas e matrículas</p>
+                <a class="btn btn-outline-primary rounded-pill px-4" asp-controller="Turma" asp-action="Listar">Acessar</a>
+            </div>
+        </div>
+    </div>
+</div>
