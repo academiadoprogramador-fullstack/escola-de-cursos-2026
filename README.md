@@ -6,25 +6,7 @@ Desenvolvido durante o curso Fullstack da [Academia do Programador](https://www.
 
 ## Funcionalidades
 
-1. Módulo de Cursos
-
-   ### Requisitos Funcionais
-   - O sistema deve permitir o cadastro de novos cursos
-   - O sistema deve permitir a edição de cursos já cadastrados
-   - O sistema deve permitir excluir cursos já cadastrados
-   - O sistema deve permitir visualizar cursos cadastrados
-
-   ### Regras de Negócio
-   - Campos obrigatórios:
-     - Nome (2-100 caracteres)
-     - Nivel (Facil, Medio, Dificil)
-     - Carga Horária (2-100 Dígitos)
-     - Módulo
-     - Categoria
-   - Não pode haver cursos com o mesmo nome.
-   - A carga horária de um curso deve ser maior que zero.
-
-2. Módulo de Categoria
+1. Módulo de Categoria
 
    ### Requisitos Funcionais
    - O sistema deve permitir o cadastro de novas categorias
@@ -37,7 +19,40 @@ Desenvolvido durante o curso Fullstack da [Academia do Programador](https://www.
      - Nome (2-100 caracteres)
    - Não pode haver duas categorias com o mesmo nome.
 
-3. Módulo de Instrutores
+2. Módulo de Cursos
+
+   ### Requisitos Funcionais
+   - O sistema deve permitir o cadastro de novos cursos
+   - O sistema deve permitir a edição de cursos já cadastrados
+   - O sistema deve permitir excluir cursos já cadastrados
+   - O sistema deve permitir visualizar cursos cadastrados
+
+   ### Regras de Negócio
+   - Campos obrigatórios:
+     - Nome (2-100 caracteres)
+     - Nivel (Facil, Medio, Dificil)
+     - Carga Horária (2-100 Dígitos)
+     - Categoria
+   - Não pode haver cursos com o mesmo nome.
+   - A carga horária de um curso deve ser maior que zero.
+
+3. Módulo de Aulas
+
+   ### Requisitos Funcionais
+   - O sistema deve permitir o cadastro de novas aulas
+   - O sistema deve permitir a edição de aulas cadastradas
+   - O sistema deve permitir excluir aulas cadastradas
+   - O sistema deve permitir visualizar aulas cadastradas
+
+   ### Regras de Negócio
+   - Campos obrigatórios:
+     - Nome (2-100 caracteres)
+     - Duração da aula (O valor não pode ser negativo)
+     - Ordem (número inteiro para ordenação)
+   - A ordem da aula dentro de um curso não poderá ser repetida.
+   - Não pode haver duas aulas com o mesmo nome.
+
+4. Módulo de Instrutores
 
    ### Requisitos Funcionais
    - O sistema deve permitir o cadastro de novos tutores
@@ -53,22 +68,27 @@ Desenvolvido durante o curso Fullstack da [Academia do Programador](https://www.
      - Graduação (2-100 caracteres)
    - Não pode haver tutores com o mesmo nome.
 
-4. Módulo de Módulos do curso
+5. Módulo de Turmas
 
    ### Requisitos Funcionais
-   - O sistema deve permitir o cadastro de novos Módulos
-   - O sistema deve permitir a edição de Módulos cadastrados
-   - O sistema deve permitir excluir Módulos cadastrados
-   - O sistema deve permitir visualizar Módulos cadastrados
+   - O sistema deve permitir o cadastro de novas turmas
+   - O sistema deve permitir a edição de turmas cadastradas
+   - O sistema deve permitir excluir turmas já cadastradas
+   - O sistema deve permitir visualizar turmas cadastradas
 
    ### Regras de Negócio
    - Campos obrigatórios:
      - Nome (2-100 caracteres)
-     - Duração do módulo (O valor não pode ser negativo)
-   - A ordem do módulo dentro de um curso não poderá ser repetida.
-   - Não pode haver dois módulos com o mesmo nome.
+     - Curso (Cada turma deve possuir um curso)
+     - Instrutor (Cada turma deve possuir um instrutor)
+     - Número máximo de alunos (1-100 Dígitos)
+     - Data de Início
+     - Data de Término (A data de término deve ser posterior a data de início)
+   - Toda turma deve possuir exatamente um instrutor.
+   - A data de término da turma deve ser posterior à data de início.
+   - O número máximo de alunos em uma turma deve ser maior que zero.
 
-5. Módulo de Alunos
+6. Módulo de Alunos
 
    ### Requisitos Funcionais
    - O sistema deve permitir o cadastro de novos alunos
@@ -83,28 +103,6 @@ Desenvolvido durante o curso Fullstack da [Academia do Programador](https://www.
      - Email (formato válido)
    - Não pode haver alunos com a mesma matrícula.
 
-6. Módulo de Turmas
-
-   ### Requisitos Funcionais
-   - O sistema deve permitir o cadastro de novas turmas
-   - O sistema deve permitir a edição de turmas cadastradas
-   - O sistema deve permitir excluir turmas já cadastradas
-   - O sistema deve permitir visualizar turmas cadastradas
-
-   ### Regras de Negócio
-   - Campos obrigatórios:
-     - Nome (2-100 caracteres)
-     - Alunos (Seleção Obrigatória)
-     - Curso (Cada turma deve possuir um curso)
-     - Instrutor (Cada turma deve possuir um instrutor)
-     - Número máximo de alunos (1-100 Dígitos)
-     - Data de Início
-     - Data de Término (A data de término deve ser posterior a data de início)
-   - Toda turma deve possuir exatamente um instrutor.
-   - A data de término da turma deve ser posterior à data de início.
-   - O número máximo de alunos em uma turma deve ser maior que zero.
-   - Um aluno não poderá ser matriculado duas vezes na mesma turma.
-
 7. Módulo de Matrícula
 
    ### Requisitos Funcionais
@@ -114,8 +112,8 @@ Desenvolvido durante o curso Fullstack da [Academia do Programador](https://www.
 
    ### Regras de Negócio
    - Campos obrigatórios:
-     - Aluno (seleção obrigatória)
      - Número da Matrícula (Gerada após o cadastro do aluno)
+     - Aluno (seleção obrigatória)
      - Curso (Seleção obrigatória)
    - Não pode adicionar o mesmo aluno duas vezes na mesma turma
    - Somente alunos cadastrados poderão ser matriculados.
