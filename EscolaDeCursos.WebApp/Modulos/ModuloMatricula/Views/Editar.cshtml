@@ -1,0 +1,31 @@
+@{
+    Layout = "_Layout";
+    ViewBag.Titulo = "Edição de Matrícula";
+}
+
+@model EditarMatriculaViewModel;
+
+<form class="card border-primary-subtle shadow-sm mx-auto p-4" style="max-width: 620px;" asp-action="Editar" asp-route-id="@Model.Id" method="post">
+    <input asp-for="Id" type="hidden">
+
+    <div class="mb-3">
+        <label asp-for="TurmaId" class="form-label fw-semibold text-primary text-uppercase small">Turma</label>
+        <select asp-for="TurmaId" class="form-select" asp-items="@(ViewBag.Turmas as List<SelectListItem>)">
+            <option value="">Selecione uma turma...</option>
+        </select>
+        <span asp-validation-for="TurmaId" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AlunoId" class="form-label fw-semibold text-primary text-uppercase small">Aluno</label>
+        <select asp-for="AlunoId" class="form-select" asp-items="@(ViewBag.Alunos as List<SelectListItem>)">
+            <option value="">Selecione um aluno...</option>
+        </select>
+        <span asp-validation-for="AlunoId" class="text-danger small fw-semibold"></span>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mt-4">
+        <a class="btn btn-outline-primary rounded-pill px-4" asp-action="Listar">Voltar</a>
+        <button class="btn btn-primary rounded-pill px-4" type="submit">Confirmar</button>
+    </div>
+</form>

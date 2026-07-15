@@ -23,7 +23,7 @@ public class ServicoMatricula : ServicoBase<Matricula>
         this.repositorioAluno = repositorioAluno;
     }
 
-    public Result Adicionar(AdicionarMatriculaDto dto)
+    public Result Cadastrar(CadastrarMatriculaDto dto)
     {
         Turma? turma = repositorioTurma.SelecionarPorId(dto.TurmaId);
 
@@ -52,6 +52,37 @@ public class ServicoMatricula : ServicoBase<Matricula>
         return Result.Ok();
     }
 
+    public Result Editar(EditarMatriculaDto dto)
+    {
+        Matricula? matricula = repositorioMatricula.SelecionarPorId(dto.Id);
+
+        if (matricula == null)
+            return Falha(string.Empty, "Matrícula não encontrada.");
+
+        Turma? turma = repositorioTurma.SelecionarPorId(dto.TurmaId);
+
+        if (turma == null)
+            return Falha(nameof(dto.TurmaId), "Turma não encontrada.");
+
+        Aluno? aluno = repositorioAluno.SelecionarPorId(dto.AlunoId);
+
+        if (aluno == null)
+            return Falha(nameof(dto.AlunoId), "Aluno não encontrado.");
+
+        List<Matricula> matriculasDaTurma = repositorioMatricula.SelecionarPorTurmaId(dto.TurmaId);
+
+        bool jaMatriculado = matriculasDaTurma.Any(m => m.Aluno.Id == dto.AlunoId && m.Id != dto.Id);
+
+        if (jaMatriculado)
+            return Falha(nameof(dto.AlunoId), "Este aluno já está matriculado nesta turma.");
+
+        Matricula matriculaAtualizada = new Matricula(aluno, turma);
+
+        repositorioMatricula.Editar(dto.Id, matriculaAtualizada);
+
+        return Result.Ok();
+    }
+
     public Result Remover(Guid id)
     {
         Matricula? matricula = repositorioMatricula.SelecionarPorId(id);
@@ -64,11 +95,36 @@ public class ServicoMatricula : ServicoBase<Matricula>
         return Result.Ok();
     }
 
+    public List<ListarMatriculaDto> SelecionarTodos()
+    {
+        return repositorioMatricula
+            .SelecionarTodos()
+            .Select(m => new ListarMatriculaDto(m.Id, m.Aluno.Nome, m.Aluno.NumeroMatricula, m.Turma.Nome))
+            .ToList();
+    }
+
+    public Result<DetalhesMatriculaDto> SelecionarPorId(Guid id)
+    {
+        Matricula? matricula = repositorioMatricula.SelecionarPorId(id);
+
+        if (matricula == null)
+            return Result.Fail("Matrícula não encontrada.");
+
+        return Result.Ok(new DetalhesMatriculaDto(
+            matricula.Id,
+            matricula.Aluno.Id,
+            matricula.Aluno.Nome,
+            matricula.Aluno.NumeroMatricula,
+            matricula.Turma.Id,
+            matricula.Turma.Nome
+        ));
+    }
+
     public List<ListarMatriculaDto> SelecionarPorTurmaId(Guid turmaId)
     {
         return repositorioMatricula
             .SelecionarPorTurmaId(turmaId)
-            .Select(m => new ListarMatriculaDto(m.Id, m.Aluno.Nome, m.Aluno.NumeroMatricula))
+            .Select(m => new ListarMatriculaDto(m.Id, m.Aluno.Nome, m.Aluno.NumeroMatricula, m.Turma.Nome))
             .ToList();
     }
 

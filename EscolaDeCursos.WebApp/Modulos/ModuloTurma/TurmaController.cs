@@ -1,6 +1,5 @@
 using AutoMapper;
 using FluentResults;
-using EscolaDeCursos.Aplicacao.Modulos.ModuloMatricula;
 using EscolaDeCursos.Aplicacao.Modulos.ModuloTurma;
 using EscolaDeCursos.WebApp.Compartilhado.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,6 @@ namespace EscolaDeCursos.WebApp.Modulos.ModuloTurma;
 
 public class TurmaController(
     ServicoTurma servicoTurma,
-    ServicoMatricula servicoMatricula,
     IMapper mapeador
 ) : Controller
 {
@@ -132,71 +130,6 @@ public class TurmaController(
         return RedirectToAction(nameof(Listar));
     }
 
-    [HttpGet]
-    public ActionResult GerenciarMatriculas(Guid id)
-    {
-        Result<DetalhesTurmaDto> resultadoTurma = servicoTurma.SelecionarPorId(id);
-
-        if (resultadoTurma.IsFailed)
-        {
-            TempData.AddErrorMessage(resultadoTurma);
-            return RedirectToAction(nameof(Listar));
-        }
-
-        List<ListarMatriculaDto> matriculas = servicoMatricula.SelecionarPorTurmaId(id);
-        List<ListarMatriculaViewModel> matriculasVm = mapeador.Map<List<ListarMatriculaViewModel>>(matriculas);
-
-        List<OpcaoAlunoMatriculaDto> alunosDisponiveis = servicoMatricula.SelecionarAlunosNaoMatriculados(id);
-
-        DetalhesTurmaDto turma = resultadoTurma.Value;
-
-        GerenciarMatriculasViewModel gerenciarVm = new GerenciarMatriculasViewModel(
-            turma.Id,
-            turma.Nome,
-            turma.NomeCurso,
-            turma.NomeInstrutor,
-            turma.NumeroMaximoAlunos,
-            turma.DataInicio,
-            turma.DataTermino,
-            matriculasVm,
-            alunosDisponiveis
-                .Select(a => new SelectListItem($"{a.Nome} ({a.NumeroMatricula})", a.Id.ToString()))
-                .ToList()
-        );
-
-        return View(gerenciarVm);
-    }
-
-    [HttpPost]
-    public ActionResult AdicionarMatricula(AdicionarMatriculaViewModel adicionarVm)
-    {
-        if (!ModelState.IsValid)
-        {
-            TempData["MensagemErro"] = "Selecione um aluno para matricular.";
-            return RedirectToAction(nameof(GerenciarMatriculas), new { id = adicionarVm.TurmaId });
-        }
-
-        AdicionarMatriculaDto dto = mapeador.Map<AdicionarMatriculaDto>(adicionarVm);
-
-        Result resultado = servicoMatricula.Adicionar(dto);
-
-        if (resultado.IsFailed)
-            TempData.AddErrorMessage(resultado);
-
-        return RedirectToAction(nameof(GerenciarMatriculas), new { id = adicionarVm.TurmaId });
-    }
-
-    [HttpPost]
-    public ActionResult RemoverMatricula(RemoverMatriculaViewModel removerVm)
-    {
-        Result resultado = servicoMatricula.Remover(removerVm.Id);
-
-        if (resultado.IsFailed)
-            TempData.AddErrorMessage(resultado);
-
-        return RedirectToAction(nameof(GerenciarMatriculas), new { id = removerVm.TurmaId });
-    }
-
     private void CarregarCursosEInstrutores()
     {
         List<OpcaoCursoTurmaDto> cursos = servicoTurma.SelecionarCursos();
@@ -211,15 +144,3 @@ public class TurmaController(
             .ToList();
     }
 }
-
-public record GerenciarMatriculasViewModel(
-    Guid TurmaId,
-    string NomeTurma,
-    string NomeCurso,
-    string NomeInstrutor,
-    int NumeroMaximoAlunos,
-    DateOnly DataInicio,
-    DateOnly DataTermino,
-    List<ListarMatriculaViewModel> Matriculas,
-    List<SelectListItem> AlunosDisponiveis
-);

@@ -16,6 +16,15 @@ public sealed class RepositorioMatriculaEmOrm(
             .SingleOrDefault(m => m.Id == idSelecionado);
     }
 
+    public override List<Matricula> SelecionarTodos()
+    {
+        return registros
+            .Include(m => m.Aluno)
+            .Include(m => m.Turma)
+            .OrderBy(m => m.Aluno.Nome)
+            .ToList();
+    }
+
     public List<Matricula> SelecionarPorTurmaId(Guid turmaId)
     {
         return registros
