@@ -12,6 +12,7 @@ using EscolaDeCursos.Infra.Modulos.ModuloCurso;
 using EscolaDeCursos.Infra.Modulos.ModuloInstrutor;
 using EscolaDeCursos.Infra.Modulos.ModuloMatricula;
 using EscolaDeCursos.Infra.Modulos.ModuloTurma;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +53,25 @@ public static class InjecaoDependencia
                 opt.EnableRetryOnFailure(3);
             });
         });
+
+        // Configuração do Usuário no Identity
+        services.AddIdentityCore<IdentityUser<Guid>>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = false;
+            options.Password.RequiredLength = 8;
+            options.Password.RequireDigit = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+        })
+        .AddRoles<IdentityRole<Guid>>() // Configuração de Cargos/Papéis no Identity
+        .AddEntityFrameworkStores<EscolaDeCursosDbContext>() // Integração com EntityFramework
+        .AddSignInManager()
+        .AddDefaultTokenProviders();
 
         // Injeta os repositórios
         services.AddScoped<IRepositorioCategoria, RepositorioCategoriaEmOrm>();
