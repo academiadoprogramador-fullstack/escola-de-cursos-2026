@@ -28,6 +28,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Middleware de reconhecimento de rotas de controllers
 app.MapDefaultControllerRoute();
 
 // Execução do Servidor
