@@ -20,15 +20,31 @@
             </button>
 
             <div class="collapse navbar-collapse" id="menuPrincipal">
-                <div class="navbar-nav ms-auto">
-                    <a class="nav-link" asp-controller="Home" asp-action="Index">Início</a>
-                    <a class="nav-link" asp-controller="Categoria" asp-action="Listar">Categorias</a>
-                    <a class="nav-link" asp-controller="Curso" asp-action="Listar">Cursos</a>
-                    <a class="nav-link" asp-controller="Instrutor" asp-action="Listar">Instrutores</a>
-                    <a class="nav-link" asp-controller="Aluno" asp-action="Listar">Alunos</a>
-                    <a class="nav-link" asp-controller="Turma" asp-action="Listar">Turmas</a>
-                    <a class="nav-link" asp-controller="Matricula" asp-action="Listar">Matrículas</a>
-                </div>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="navbar-nav ms-auto">
+                        <a class="nav-link" asp-controller="Home" asp-action="Index">Início</a>
+                        <a class="nav-link" asp-controller="Categoria" asp-action="Listar">Categorias</a>
+                        <a class="nav-link" asp-controller="Curso" asp-action="Listar">Cursos</a>
+                        <a class="nav-link" asp-controller="Instrutor" asp-action="Listar">Instrutores</a>
+                        <a class="nav-link" asp-controller="Aluno" asp-action="Listar">Alunos</a>
+                        <a class="nav-link" asp-controller="Turma" asp-action="Listar">Turmas</a>
+                        <a class="nav-link" asp-controller="Matricula" asp-action="Listar">Matrículas</a>
+                    </div>
+
+                    <div class="dropdown ms-3">
+                        <button class="btn btn-outline-primary rounded-pill btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            @User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <form asp-controller="Autenticacao" asp-action="Sair" method="post" class="d-inline">
+                                    <button type="submit" class="dropdown-item text-danger">Sair</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
             </div>
         </div>
     </nav>
