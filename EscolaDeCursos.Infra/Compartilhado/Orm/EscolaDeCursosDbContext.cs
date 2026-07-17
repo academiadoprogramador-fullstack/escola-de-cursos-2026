@@ -35,28 +35,26 @@ public sealed class EscolaDeCursosDbContext(
 
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
 
-        Guid? userId = userProvider?.Id;
-
         modelBuilder.Entity<Categoria>()
-            .HasQueryFilter(c => c.UserId == userId);
+            .HasQueryFilter(c => c.UserId == userProvider!.Id);
 
         modelBuilder.Entity<Curso>()
-            .HasQueryFilter(c => c.UserId == userId);
+            .HasQueryFilter(c => c.UserId == userProvider!.Id);
 
         modelBuilder.Entity<Aula>()
-            .HasQueryFilter(a => a.UserId == userId);
+            .HasQueryFilter(a => a.UserId == userProvider!.Id);
 
         modelBuilder.Entity<Instrutor>()
-            .HasQueryFilter(i => i.UserId == userId);
+            .HasQueryFilter(i => i.UserId == userProvider!.Id);
 
         modelBuilder.Entity<Aluno>()
-            .HasQueryFilter(a => a.UserId == userId);
+            .HasQueryFilter(a => a.UserId == userProvider!.Id);
 
         modelBuilder.Entity<Turma>()
-            .HasQueryFilter(t => t.UserId == userId);
+            .HasQueryFilter(t => t.UserId == userProvider!.Id);
 
         modelBuilder.Entity<Matricula>()
-            .HasQueryFilter(m => m.UserId == userId);
+            .HasQueryFilter(m => m.UserId == userProvider!.Id);
     }
 
     public override int SaveChanges()
