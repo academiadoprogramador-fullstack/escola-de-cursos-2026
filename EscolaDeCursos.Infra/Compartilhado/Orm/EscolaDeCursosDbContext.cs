@@ -35,26 +35,31 @@ public sealed class EscolaDeCursosDbContext(
 
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
 
-        modelBuilder.Entity<Categoria>()
-            .HasQueryFilter(c => c.UserId == userProvider!.Id);
+        // Query Filters devem utilizar a dependêcia do UserProvider diretamente
+        // O EF faz cachê do OnModelCreating e variáveis locais não são atualizadas
+        if (userProvider != null)
+        {
+            modelBuilder.Entity<Categoria>()
+                .HasQueryFilter(c => c.UserId == userProvider.Id);
 
-        modelBuilder.Entity<Curso>()
-            .HasQueryFilter(c => c.UserId == userProvider!.Id);
+            modelBuilder.Entity<Curso>()
+                .HasQueryFilter(c => c.UserId == userProvider.Id);
 
-        modelBuilder.Entity<Aula>()
-            .HasQueryFilter(a => a.UserId == userProvider!.Id);
+            modelBuilder.Entity<Aula>()
+                .HasQueryFilter(a => a.UserId == userProvider.Id);
 
-        modelBuilder.Entity<Instrutor>()
-            .HasQueryFilter(i => i.UserId == userProvider!.Id);
+            modelBuilder.Entity<Instrutor>()
+                .HasQueryFilter(i => i.UserId == userProvider.Id);
 
-        modelBuilder.Entity<Aluno>()
-            .HasQueryFilter(a => a.UserId == userProvider!.Id);
+            modelBuilder.Entity<Aluno>()
+                .HasQueryFilter(a => a.UserId == userProvider.Id);
 
-        modelBuilder.Entity<Turma>()
-            .HasQueryFilter(t => t.UserId == userProvider!.Id);
+            modelBuilder.Entity<Turma>()
+                .HasQueryFilter(t => t.UserId == userProvider.Id);
 
-        modelBuilder.Entity<Matricula>()
-            .HasQueryFilter(m => m.UserId == userProvider!.Id);
+            modelBuilder.Entity<Matricula>()
+                .HasQueryFilter(m => m.UserId == userProvider.Id);
+        }
     }
 
     public override int SaveChanges()
