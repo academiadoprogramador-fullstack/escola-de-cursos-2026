@@ -34,6 +34,29 @@ public sealed class EscolaDeCursosDbContext(
         Assembly assembly = typeof(EscolaDeCursosDbContext).Assembly;
 
         modelBuilder.ApplyConfigurationsFromAssembly(assembly);
+
+        Guid? userId = userProvider?.Id;
+
+        modelBuilder.Entity<Categoria>()
+            .HasQueryFilter(c => c.UserId == userId);
+
+        modelBuilder.Entity<Curso>()
+            .HasQueryFilter(c => c.UserId == userId);
+
+        modelBuilder.Entity<Aula>()
+            .HasQueryFilter(a => a.UserId == userId);
+
+        modelBuilder.Entity<Instrutor>()
+            .HasQueryFilter(i => i.UserId == userId);
+
+        modelBuilder.Entity<Aluno>()
+            .HasQueryFilter(a => a.UserId == userId);
+
+        modelBuilder.Entity<Turma>()
+            .HasQueryFilter(t => t.UserId == userId);
+
+        modelBuilder.Entity<Matricula>()
+            .HasQueryFilter(m => m.UserId == userId);
     }
 
     public override int SaveChanges()
