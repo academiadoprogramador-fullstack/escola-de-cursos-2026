@@ -33,8 +33,8 @@ public sealed class AulaConfiguration : IEntityTypeConfiguration<Aula>
             .IsUnique()
             .HasDatabaseName("UQ_TBAula_Nome");
 
-        builder.HasIndex("CursoId", nameof(Aula.Ordem))
+        builder.HasIndex(nameof(Aula.UserId), "CursoId", nameof(Aula.Ordem))
             .IsUnique()
-            .HasDatabaseName("UQ_TBAula_CursoId_Ordem");
+            .HasDatabaseName("UQ_TBAula_UserId_CursoId_Ordem");
     }
 }

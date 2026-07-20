@@ -26,5 +26,9 @@ public sealed class InstituicaoConfiguration : IEntityTypeConfiguration<Institui
             .HasForeignKey<Instituicao>(i => i.UserId)
             .HasConstraintName("FK_TBInstituicao_AspNetUsers")
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(a => new { a.UserId, a.Nome })
+            .IsUnique()
+            .HasDatabaseName("UQ_TBInstituicao_UserId_Nome");
     }
 }

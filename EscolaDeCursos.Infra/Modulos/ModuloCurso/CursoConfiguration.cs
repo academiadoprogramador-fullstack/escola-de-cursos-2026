@@ -27,9 +27,9 @@ public sealed class CursoConfiguration : IEntityTypeConfiguration<Curso>
         builder.Property(c => c.CargaHoraria)
             .IsRequired();
 
-        builder.HasIndex(c => c.Nome)
+        builder.HasIndex(c => new { c.UserId, c.Nome })
             .IsUnique()
-            .HasDatabaseName("UQ_TBCurso_Nome");
+            .HasDatabaseName("UQ_TBCurso_UserId_Nome");
 
         builder.HasOne(c => c.Categoria)
             .WithMany()

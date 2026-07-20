@@ -22,8 +22,8 @@ public sealed class MatriculaConfiguration : IEntityTypeConfiguration<Matricula>
             .HasConstraintName("FK_TBMatricula_TBAluno")
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex("TurmaId", "AlunoId")
+        builder.HasIndex("UserId", "TurmaId", "AlunoId")
             .IsUnique()
-            .HasDatabaseName("UQ_TBMatricula_TurmaId_AlunoId");
+            .HasDatabaseName("UQ_TBMatricula_UserId_TurmaId_AlunoId");
     }
 }

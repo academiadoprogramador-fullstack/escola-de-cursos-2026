@@ -32,8 +32,8 @@ public sealed class InstrutorConfiguration : IEntityTypeConfiguration<Instrutor>
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.HasIndex(i => i.Nome)
+        builder.HasIndex(i => new { i.UserId, i.Nome })
             .IsUnique()
-            .HasDatabaseName("UQ_TBInstrutor_Nome");
+            .HasDatabaseName("UQ_TBInstrutor_UserId_Nome");
     }
 }
